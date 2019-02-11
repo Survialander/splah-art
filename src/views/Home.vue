@@ -1,13 +1,30 @@
 <template>
     <div class="home">
         <ul>
+            <li class="lastChild">
+                <label for="champName">Nome:</label>
+                <input id="champName" class="nameInput" placeholder="Nome do Campeão" type="text" v-model="championName">
+            </li>
+                
+            
+            <img class="logo" :src="require('../assets/img/jungle_icon.png')"/>
+            <img class="logo" :src="require('../assets/img/middle_icon.png')"/>
+            <img class="logo" :src="require('../assets/img/marksman_icon.png')"/>
+            <img class="logo" :src="require('../assets/img/support_icon.png')"/>
+            <img class="logo" :src="require('../assets/img/top_icon.png')"/>
+          
+
+            <li>
+                <input type="checkbox" id="mage" value="Mage Assassin" v-model="championTag">
+                <label for="mage">All</label>
+            </li>
             <li>
                 <input type="checkbox" id="mage" value="Mage" v-model="championTag">
-                <label for="mage">Mago</label>
+                <label for="mage">Mage</label>
             </li>
             <li>
                 <input type="checkbox" id="assassin" value="Assassin" v-model="championTag">
-                <label for="assassin">Assassin</label>
+                <label for="assassin">Assasin</label>
             </li>
             <li>
                 <input type="checkbox" id="tank" value="Tank" v-model="championTag">
@@ -26,13 +43,11 @@
                 <label for="fighter">Lutador</label>
             </li>
         </ul>
-        <label for="">Name</label>
-        <input type="text" v-model="championName">
-        <transition-group name="list" tag="div">
-            <router-link class="list-item" :to="`/splash/${key}`" v-for="(champion, key) in championsFiltreds" :key="champion.key">
+            <transition-group name="list" tag="div">
+                <router-link class="list-item" :to="`/splash/${key}`" v-for="(champion, key) in championsFiltreds" :key="champion.key">
                 <img :src="getIconSquareChamp(key)" alt="">
-            </router-link>
-        </transition-group>
+                </router-link>
+            </transition-group>
     </div>
 </template>
 
@@ -47,18 +62,20 @@
         data: () => ({
             champions: [],
             championTag: [],
-            championName: ''
+            championName: '',
         }),
+    
         mounted() {
             this.getChampions();
         },
         computed: {
             championsFiltreds() {
-                let filtredsByTags = Object.filter(this.champions, e => e.tags.some(e => this.championTag.some(i => i == e)))
+                let filtredsByTags = Object.filter(this.champions, e => 
+                    e.tags.some(e => this.championTag.some(i => i == e)))
                 
                 return Object.filter(filtredsByTags, e => {
-                    let regex = new RegExp(`${this.championName}(\\w+)?`)
-                    return regex.test(e.name)
+                    let regex = new RegExp(`${this.championName.toLowerCase()}(\\w+)?`)
+                    return regex.test(e.name.toLowerCase())
                 }); 
             },
         },
@@ -77,17 +94,60 @@
     }
 </script>
 <style>
+div{
+    font-family: Arial, Helvetica, sans-serif;  
+}
+ul{
+    list-style: none;
+}
+li{
+    float: right;
+    padding: 10px;
+}
 .list-item {
   transition: all 1s;
   display: inline-flex;
   justify-content: center;
-  margin-right: 10px;
+  padding: 2px;
+  margin-top: 10px;
 }
 .list-enter, .list-leave-to {
   opacity: 0;
   transform: translateY(30px);
 }
 .list-leave-active {
-  position: absolute;
+  position: absolute;   
+}
+.logo{
+    width: 32px;
+    height: 32px; 
+    border-radius: 4px; 
+    background-color: black;
+    transition: 0.5s all;    
+}
+.logo:hover{
+    margin-right: 4px;
+    margin-left: 4px;
+    width: 34px;
+    height: 34px;
+    transition-delay: 0.5s all;
+}
+.nameInput{
+    transition: 0.5s all;
+    border: solid 1px gray;
+    border-radius: 3px; 
+    width: 120px;
+    padding: 3px;
+}
+.nameInput:focus{
+    width: 150px;
+    transition: 0.5s all;
+}
+.lastChild{
+    float: left;
+}
+img{
+    width: 64px;
+    height: 64px;
 }
 </style>

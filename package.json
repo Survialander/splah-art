@@ -8,8 +8,10 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "flickity": "^2.2.0",
     "vue": "^2.5.21",
     "vue-axios": "^2.1.4",
+    "vue-flickity": "^1.1.2",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {

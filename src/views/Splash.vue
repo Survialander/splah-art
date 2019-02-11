@@ -1,17 +1,35 @@
 <template>
-    <div class="about">
-        <div class="img" v-for="skin in skins" :key="skin.num">
-            <img :src="getSplashArtMain(skin.num)">
+<div class="about">
+      <span> {{ champName }} </span>
+    <Flickity v-if="Object.keys(skins).length > 0" ref="Flickity" :options="flickityOptions">
+        <div v-for="skin in skins" :key="skin.num" class="carousel-cell">                
+            <img class="img"  :src="getSplashArtMain(skin.num)"> 
         </div>
-    </div>
+    </Flickity>
+</div>
 </template>
 
 <script>
+import Flickity from 'vue-flickity'
+
     export default {
-        data: self => ({
-            champion: {},
-            champName: self.$route.params.champ
-        }),
+        components: {
+            Flickity
+        },
+        data() {
+            return {
+                champion: {},
+                champName: this.$route.params.champ,
+                flickityOptions: {
+                                initialIndex: 0,
+                                prevNextButtons: true,
+                                pageDots: false,
+                                wrapAround: true,
+                                freeScroll: false
+                                // any options from Flickity can be used
+                            }
+            }
+        },
         mounted() {
             this.getChampion()
         },
@@ -30,19 +48,20 @@
             },
             getSplashArtMain(idSplash) {
                 return `http://ddragon.leagueoflegends.com/cdn/img/champion/splash/${this.champName}_${idSplash}.jpg`
-            }
+            },   
         }
     }
 </script>
 <style>
 .img {
-    width: 500px;
-    height: 300px;
-    display: block;
+    width: 600px;
+    height: 400px;
+    border-radius: 3px;
 }
-.img img {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
+span{
+    font-family:Arial, Helvetica, sans-serif;
+    font-size: 30px;
+    font-style: italic;
+    margin-bottom: 5px;
 }
 </style>
